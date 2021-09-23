@@ -18,3 +18,7 @@ const breedDataFetcher = function(breedName, callbackToReturnData) {
 module.exports = {
   breedDataFetcher,
 };
+
+
+// CALL BACK RULE WE MADE FOR NULL OR ERROR = IMPORTANT
+//This function should call the callback with either an error if there's a error or null if there isn't, for the first argument.
