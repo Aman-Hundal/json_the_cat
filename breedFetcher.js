@@ -1,21 +1,20 @@
 const request = require('request');
 
-const breedFetcher = function(commandLineArg) {
-  let breedArg = commandLineArg[2];
-  request(`https://api.thecatapi.com/v1/breeds/search?q=${breedArg}`, ((error, response, body) => {
+const breedDataFetcher = function(breedName, callbackToReturnData) {
+  request(`https://api.thecatapi.com/v1/breeds/search?q=${breedName}`, ((error, response, body) => {
     if (error) {
-      console.log(error);
+      callbackToReturnData(error, null); // we predertmined that our call back will take in two params and check to see if one of these params exist to excute the info or not (via console log). CB in index will read this as (error, null there if error met)
       return;
     }
     const data = JSON.parse(body);
     if (data[0] === undefined) {
-      console.log("ERROR. Breed does not exist");
+      callbackToReturnData("ERROR. Breed does not exist", null); //callback in index will read this as error,null. Therefore if(error) met
       return;
     }
-    console.log(data[0].description);
-    // console.log(typeof data);
-    // console.log(data)
+    callbackToReturnData(null, (data[0].description)); //callback in index will read this as (null, desc). Therefore if(error) not met and else done.
   }));
 };
 
-breedFetcher(process.argv);
+module.exports = {
+  breedDataFetcher,
+};
